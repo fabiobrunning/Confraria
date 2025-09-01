@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Users, Building2, Target, FileText, Search, Plus, Download, User, Trophy, UserCheck, UsersIcon, Clock, CheckCircle, AlertCircle, UserPlus, Smartphone, FolderOpen, Globe } from 'lucide-react';
+import { AuthProvider } from './contexts/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { Header } from './components/Header';
 import { GrupoForm } from './components/GrupoForm';
 import { GrupoCard } from './components/GrupoCard';
 import { MembroForm } from './components/MembroForm';
@@ -52,7 +55,7 @@ interface TabItem {
   icon: React.ElementType;
 }
 
-function App() {
+function Dashboard() {
   const [activeTab, setActiveTab] = useState('membros');
   const [searchTerm, setSearchTerm] = useState('');
   const [showGrupoForm, setShowGrupoForm] = useState(false);
@@ -543,32 +546,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-400">
-      {/* Fixed Header */}
-      <div className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-40">
-        <div className="w-full px-4 sm:px-6 lg:px-6">
-          <div className="flex items-center justify-between h-14 md:h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <img 
-                src="/LogoPreto.png" 
-                alt="Logo" 
-               style={{ transform: 'scale(1.9)' }}
-className="h-10 w-auto"
-              />
-            </div>
-            
-            {/* Company Name */}
-            <div className="flex items-center pr-6 sm:pr-4 md:pr-6 lg:pr-10">
-              <img 
-                src="/Confraria preta.png" 
-                alt="Confraria Pedra Branca" 
-                style={{ transform: 'scale(3.3)' }}
-                className="h-8 md:h-10 w-auto"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Header with Auth */}
+      <Header />
 
       {/* Navigation Tabs */}
       <div className="fixed top-14 md:top-16 left-0 right-0 bg-white border-b border-gray-200 z-30">
@@ -1017,6 +996,16 @@ className="h-10 w-auto"
         />
       )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    </AuthProvider>
   );
 }
 
